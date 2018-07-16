@@ -38,6 +38,8 @@ GameObject:
   - component: {fileID: 20648322337177300}
   - component: {fileID: 124037181646440288}
   - component: {fileID: 81599272236641262}
+  - component: {fileID: 114504093192404318}
+  - component: {fileID: 114373162236813008}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -51,13 +53,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1753874598328610}
-  m_LocalRotation: {x: 0.1531953, y: -0.47926295, z: 0.08537601, w: 0.8599705}
-  m_LocalPosition: {x: 4.42, y: 3.81, z: -3.55}
+  m_LocalRotation: {x: 0.25067005, y: -0.46633282, z: 0.13969885, w: 0.83676916}
+  m_LocalPosition: {x: 5.22, y: 5.1, z: -4.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4869676408767052}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 20.201, y: -58.262, z: 0}
+  m_LocalEulerAnglesHint: {x: 33.353, y: -58.262, z: 0}
 --- !u!4 &4869676408767052
 Transform:
   m_ObjectHideFlags: 1
@@ -115,6 +117,30 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1753874598328610}
   m_Enabled: 1
+--- !u!114 &114373162236813008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1753874598328610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dca68fdb388dc549b8edae08e6cb866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114504093192404318
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1753874598328610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f877357b213a02449b12004d1fc40ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerProperties: 0900000008000000
+  _distanceToBackground: 100
 --- !u!114 &114663624829715132
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -126,7 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0cf45bbea7e7a48bf42e470940afc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerObj: {fileID: 0}
   _cameraFollowSpeed: 5
 --- !u!124 &124037181646440288
 Behaviour:
