@@ -16,7 +16,8 @@ public class PlayerMovement : MonoBehaviour {
 
     public MovementMode _movementMode;
 
-    [SerializeField] float _walkMoveStopRadius = .2f;
+    [SerializeField] float _walkStopMoveRadius = .2f;
+    [SerializeField] float _attackStopMoveRadius = .1f;
 
     ThirdPersonCharacter _character;
     CameraRaycaster _cameraRaycaster;
@@ -31,7 +32,7 @@ public class PlayerMovement : MonoBehaviour {
         _character = GetComponent<ThirdPersonCharacter>();
         _currentClickTarget = transform.position;
 
-        print(_cameraRaycaster.gameObject.name);
+        //print(_cameraRaycaster.gameObject.name);
 	}
 
     // Fix mouse click and WASD coflicting movement
@@ -57,7 +58,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (Input.GetMouseButton(0))
         {
-            print("Cursor raycast hit layer: " + _cameraRaycaster.LayerHit);
+            //print("Cursor raycast hit layer: " + _cameraRaycaster.LayerHit);
             switch (_cameraRaycaster.LayerHit)
             {
                 case Layer.Walkable:
@@ -74,8 +75,13 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
+        PlayerToDestination();
+    }
+
+    private void PlayerToDestination()
+    {
         var playerToClickPoint = _currentClickTarget - transform.position;
-        if (playerToClickPoint.magnitude >= _walkMoveStopRadius)
+        if (playerToClickPoint.magnitude >= _walkStopMoveRadius)
         {
             _character.Move(playerToClickPoint, false, false);
         }
@@ -96,10 +102,18 @@ public class PlayerMovement : MonoBehaviour {
         //if (Camera.main != null)
         
             // calculate camera relative direction to move:
-            Vector3 m_CamForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-            Vector3  m_Move = v * m_CamForward + h * Camera.main.transform.right;
+            Vector3 camForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+            Vector3  move = v * camForward + h * Camera.main.transform.right;
         
-        _character.Move(m_Move, crouch, false);
+        _character.Move(move, crouch, false);
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Draw movement gizmos
+        Gizmos.color = Color.black;
+        Gizmos.DrawLine(transform.position, _currentClickTarget);
+        Gizmos.DrawSphere(_currentClickTarget, _walkStopMoveRadius);
     }
 
 }

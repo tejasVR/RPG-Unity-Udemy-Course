@@ -10,7 +10,6 @@ public class CameraRaycaster : MonoBehaviour {
         Layer.Walkable
     };
 
-
     [SerializeField] float _distanceToBackground = 100f;
     Camera _viewCamera;
 
@@ -26,11 +25,21 @@ public class CameraRaycaster : MonoBehaviour {
         get { return _layerHit; }
     }
 
-	// Use this for initialization
-	void Start () {
+    public delegate void OnLayerChange(Layer newLayer); // declare new delegate type
+    public event OnLayerChange _layerChangeObservers; // instantiate an observer set
+
+    //void LayerChangeHandler()
+    //{
+    //    print("layerHandler");
+    //}
+
+    // Use this for initialization
+    void Start () {
         _viewCamera = Camera.main;
+        //_layerChangeObservers += LayerChangeHandler; // add to set of handling functions
+        //_layerChangeObservers(); // call the delegates
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
@@ -40,7 +49,11 @@ public class CameraRaycaster : MonoBehaviour {
             if (hit.HasValue)
             {
                 _hit = hit.Value;
-                _layerHit = layer;
+                if (LayerHit != layer)
+                {
+                    _layerHit = layer;
+                    _layerChangeObservers(layer); // call delegate
+                }
                 return;
             }
         }
