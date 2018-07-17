@@ -2,15 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
+using UnityStandardAssets.CrossPlatformInput;
 
 [RequireComponent(typeof (ThirdPersonCharacter))]
 public class PlayerMovement : MonoBehaviour {
+
+    public enum MovementMode
+    {
+        MouseMove,
+        KeyboardMove,
+        GampadMove
+    }
+
+    public MovementMode _movementMode;
 
     [SerializeField] float _walkMoveStopRadius = .2f;
 
     ThirdPersonCharacter _character;
     CameraRaycaster _cameraRaycaster;
     Vector3 _currentClickTarget;
+
+    public bool _isDirectMovement = true;
 
 	// Use this for initialization
 	private void Start ()
@@ -21,11 +33,29 @@ public class PlayerMovement : MonoBehaviour {
 
         print(_cameraRaycaster.gameObject.name);
 	}
-	
-	// Update is called once per frame
-	void FixedUpdate ()
+
+    // Fix mouse click and WASD coflicting movement
+
+    private void Update()
     {
-	    if (Input.GetMouseButton(0))
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            _isDirectMovement = !_isDirectMovement; //toggle mouse/keybpard movement
+            _currentClickTarget = transform.position; // clear click target
+        }
+    }
+
+    void FixedUpdate ()
+    {
+        if (_isDirectMovement)
+            ProcessMouseMovement();
+        else
+            ProcessKeyboardMovement();
+    }
+
+    private void ProcessMouseMovement()
+    {
+        if (Input.GetMouseButton(0))
         {
             print("Cursor raycast hit layer: " + _cameraRaycaster.LayerHit);
             switch (_cameraRaycaster.LayerHit)
@@ -41,9 +71,7 @@ public class PlayerMovement : MonoBehaviour {
                 default:
                     print("UNEXPECTED LAYER FOUND");
                     return;
-
             }
-
         }
 
         var playerToClickPoint = _currentClickTarget - transform.position;
@@ -55,6 +83,23 @@ public class PlayerMovement : MonoBehaviour {
         {
             _character.Move(Vector3.zero, false, false);
         }
-
     }
+
+    private void ProcessKeyboardMovement()
+    {
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+
+        bool crouch = Input.GetKey(KeyCode.C);
+
+        // calculate move direction to pass to character
+        //if (Camera.main != null)
+        
+            // calculate camera relative direction to move:
+            Vector3 m_CamForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+            Vector3  m_Move = v * m_CamForward + h * Camera.main.transform.right;
+        
+        _character.Move(m_Move, crouch, false);
+    }
+
 }
