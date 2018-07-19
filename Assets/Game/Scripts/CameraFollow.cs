@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
 
-    Transform _playerObj;
+    Transform _target;
     public float _cameraFollowSpeed;
 
 	// Use this for initialization
 	void Start () {
-        _playerObj = GameObject.FindGameObjectWithTag("Player").transform;
+        //_target = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 	
 	void LateUpdate () {
 
-        transform.position = Vector3.Lerp(transform.position, _playerObj.position, Time.deltaTime * _cameraFollowSpeed);
+        transform.position = Vector3.Lerp(transform.position, _target.position, Time.deltaTime * _cameraFollowSpeed);
 		
 	}
 }
